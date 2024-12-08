@@ -16,6 +16,7 @@ func main() {
 	addr := ":8080"
 	server := api.Server{
 		ListenAddr: addr,
+		Logger:     logger,
 	}
 
 	slog.Info("server started", "addr", addr)
