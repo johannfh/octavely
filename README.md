@@ -1,4 +1,3 @@
 # Octavely
 
-A place for your music.
-
+A place for your sheet music.
