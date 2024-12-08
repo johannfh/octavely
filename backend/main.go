@@ -13,13 +13,15 @@ func main() {
 	slog.SetDefault(logger)
 
 	// TODO: get from cli flag --port (default "8080")
-	addr := ":8080"
-	server := api.Server{
-		ListenAddr: addr,
-		Logger:     logger,
-	}
+	port := 8080
 
-	slog.Info("server started", "addr", addr)
+	opts := append(
+		api.DefaultOpts,
+		api.WithHost("localhost"),
+		api.WithPort(port),
+	)
+	server := api.NewServer(opts...)
+
 	err := server.Listen()
 	assert.NoError(err, "failed to start server")
 
