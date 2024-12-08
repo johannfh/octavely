@@ -15,6 +15,7 @@ type Server struct {
 func (s *Server) Listen() error {
 	r := chi.NewRouter()
 
-	http.ListenAndServe(s.ListenAddr, r)
-	return nil
+	err := http.ListenAndServe(s.ListenAddr, r)
+
+	return err
 }
