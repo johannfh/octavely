@@ -12,6 +12,7 @@ import (
 	"github.com/johannfh/go-utils/assert"
 	"github.com/johannfh/octavely/backend/api"
 	"github.com/johannfh/octavely/backend/db"
+	"github.com/johannfh/octavely/backend/db/repository"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -61,6 +62,8 @@ func main() {
 		"change", newVersion-oldVersion,
 	)
 
+	queries := repository.New(sqlDB)
+
 	// TODO: get from cli flag --port (default "8080")
 	port := 8080
 
@@ -68,6 +71,7 @@ func main() {
 		api.DefaultOpts,
 		api.WithHost("localhost"),
 		api.WithPort(port),
+		api.WithQueries(queries),
 	)
 	server := api.NewServer(opts...)
 

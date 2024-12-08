@@ -6,13 +6,16 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/johannfh/go-utils/assert"
+	"github.com/johannfh/octavely/backend/db/repository"
 )
 
 type Server struct {
 	host string
 	port int
 
-	logger *slog.Logger
+	logger  *slog.Logger
+	queries *repository.Queries
 }
 
 type NewServerOpt func(*Server)
@@ -23,6 +26,8 @@ func NewServer(options ...NewServerOpt) *Server {
 	for _, option := range options {
 		option(server)
 	}
+
+	assert.NotNil(server.queries, "database queries missing")
 
 	return server
 }
@@ -51,8 +56,18 @@ func WithLogger(logger *slog.Logger) NewServerOpt {
 	}
 }
 
+func WithQueries(queries *repository.Queries) NewServerOpt {
+	return func(s *Server) {
+		s.queries = queries
+	}
+}
+
 func (s *Server) Listen() (err error) {
 	r := chi.NewRouter()
+
+	r.Get("/composers/{id}", s.handleGetComposer)
+
+	r.Get("/composers", s.handleGetAllComposers)
 
 	addr := fmt.Sprintf("%s:%d", s.host, s.port)
 
