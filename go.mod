@@ -14,7 +14,6 @@ require (
 )
 
 require (
-	github.com/golang-migrate/migrate v3.5.4+incompatible
 	github.com/golang-migrate/migrate/v4 v4.18.1
 	github.com/mattn/go-sqlite3 v1.14.24
 )
